@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const mysql= require("mysql");
+const mysql = require("mysql");
 const console = require("console.table");
 
 //gets connection to database and portion
@@ -20,7 +20,7 @@ const employee = () => {
         LEFT JOIN employee managers ON employee.manager_id = managers.id
         INNER JOIN role ON employee.role_id = role.id`,
 
-        (err,results) => {
+        (err, results) => {
             if (err) throw err;
             console.table(results);
             init();
@@ -37,14 +37,14 @@ const showRoles = () => {
         INNER JOIN deparment ON role.department_id = deparment.id`,
 
         (err, results) => {
-            if (err) throw err;console.table(results);
+            if (err) throw err; console.table(results);
             init();
         }
     );
 };
 
 //showing all deparments
-const showDeparments = ()=> {
+const showDeparments = () => {
     console.log('Showing deparments');
     connection.query(
         `SELECT deparment_name, title, salary
@@ -52,7 +52,7 @@ const showDeparments = ()=> {
         INNER JOIN role ON role.deparment_id = deparment.id`,
 
         (err, results) => {
-            if (err) throw err;console.table(results);
+            if (err) throw err; console.table(results);
             init();
         }
     )
@@ -66,39 +66,79 @@ const employeeDep = () => {
         (err, results) => {
             if (err) throw err;
 
-        const departments = results.map((department) => {
-            return department.department_name;
-        });
+            const departments = results.map((department) => {
+                return department.department_name;
+            });
 
-        inquirer
-            .prompt({
-                name: 'department',
-                type: 'list',
-                message: 'Which deparment would you like to show?',
-                choices: departments
-            })
-            .then((answer) => {
-                console.log('Showing Employees by Deparment');
-                connection.query(
-                    `SELECT title, first_name, last_name, department_name 
+            inquirer
+                .prompt({
+                    name: 'department',
+                    type: 'list',
+                    message: 'Which deparment would you like to show?',
+                    choices: departments
+                })
+                .then((answer) => {
+                    console.log('Showing Employees by Deparment');
+                    connection.query(
+                        `SELECT title, first_name, last_name, department_name 
                     FROM department 
                     INNER JOIN role ON role.department_id = deparment.id 
                     INNER JOIN employees ON employees.role_id = role.id 
                     WHERE ?`,
-                    {
-                        department_name: answer.department,
-                    },
+                        {
+                            department_name: answer.department,
+                        },
 
-                    (err, results) => {
-                        if (err) throw err;
-                        console.table(results);
-                        init();
-                    }
-                );
-            });
+                        (err, results) => {
+                            if (err) throw err;
+                            console.table(results);
+                            init();
+                        }
+                    );
+                });
         }
     );
 };
 
+//shoiwing employee by roles
+const employeeRoles = () => {
+    connection.query(
+        "SELECT * FROM role",
 
+        (err, results) => {
+            if (err) throw err;
+
+            const roles = results.map((role) => {
+    return role.title;
+});
+
+inquirer
+    .prompt({
+        name: "role",
+        type: "list",
+        message: "Select which role you would like to view.",
+        choices: roles,
+    })
+    .then((answer) => {
+        console.log("Viewing employees by role");
+        connection.query(
+            `
+        SELECT title, first_name, last_name 
+        FROM role 
+        INNER JOIN employees ON employees.role_id = role.id
+        WHERE ?`,
+            {
+                title: answer.role,
+            },
+
+            (err, results) => {
+                if (err) throw err;
+                console.table(results);
+                init();
+            }
+        );
+    });
+        }
+      );
+    };
 
