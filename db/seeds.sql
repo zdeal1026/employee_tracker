@@ -32,11 +32,24 @@ VALUES
 
 INSERT INTO role (title, salary, department_id)
 VALUES 
-        ('')
+        ('Sales Lead', '100000', 1)
+        ('Salesperson', '65000', 1)
+        ('Lead Engineer', '150000', 2)
+        ('Software Engineer', '12000', 2)
+        ('Accountant', '125000', 3)
+        ('Legal Team Lead', '250000', 4)
+        ('Lawyer', '190000', 4)
+        
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES
-        ('')
+        ('Robert', 'Smith', 34, 4)
+        ('James', 'Spader', 56, null)
+        ('Kevin', 'Conroy', 23, 3)
+        ('Bruce', 'Wayne', 83, null )
+        ('Val', 'Kilmer', 44, 2)
+        ('Michael', 'Keaton', 68, 1 )
+        ('Ben', 'Affleck', 47, null )
 
 SELECT * FROM department;
 
