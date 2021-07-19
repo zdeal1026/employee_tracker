@@ -12,13 +12,13 @@ const connection = mysql.createConnection({
 });
 
 //viewing employees
-const employee = () => {
+const employees = () => {
     console.log('Showing Employee Data');
     connection.query(
-        `SELECT employee.first_name , employeee.last_name, title, salary, managers.first_name AS manager_name
-        FROM employee
-        LEFT JOIN employee managers ON employee.manager_id = managers.id
-        INNER JOIN role ON employee.role_id = role.id`,
+        `SELECT employees.first_name , employees.last_name, title, salary, managers.first_name AS manager_name
+        FROM employees
+        LEFT JOIN employees managers ON employees.manager_id = managers.id
+        INNER JOIN role ON employees.role_id = role.id`,
 
         (err, results) => {
             if (err) throw err;
@@ -141,4 +141,77 @@ inquirer
         }
       );
     };
+
+    //adding employee
+    const addEmployee = () = > {
+        connection.query(
+            `SELECT * FROM employees`,
+            
+            (err, employResults) => {
+                if (err) throw err;
+
+                const employees = employResults.map((employee) => {
+                    return {
+                        name: employee.first_name + " " + employee.last_name, 
+                        value: employee.id,
+                    };
+                });
+                employees.push({ name: "No Manager", value: null});
+
+                connection.query(
+                    `SELECT * FROM role`,
+
+                    (err,results) => {
+                        if (err) throw err;
+                        
+                        const roles = results.map((role) => {
+                            return {name: role.title, value: role.id };
+                        });
+
+                        inquirer
+                        .prompt([
+                            {
+                                name: "first_name",
+                                type: "input",
+                                mesage: "Please enter employee's first name.",
+                            },
+                            {
+                                name: "last_name",
+                                type: "input",
+                                mesage: "Please enter employee's last name.",
+                            },
+                            {
+                                name: "role_id",
+                                type: "list",
+                                message: "Please enter role ID number.",
+                                choices: roles,
+                            },
+                            {
+                                name: "manager_id",
+                                type: "list",
+                                message: "Please enter manager name",
+                                choices: employees,
+                            },
+                        ])
+                        .then((answer) => {
+                            connection.query(
+                                `INSERT INTO employees SET ?`,
+                                {
+                                    first_name: answer.first_name,
+                                    last_name: answer.last_name,
+                                    role_id: answer.role_id,
+                                    manager_id: answer.manager_id,
+                                },
+                                (err, res) => {
+                                    if (err) throw err;
+                                    console.log("Employee Added");
+                                    init();
+                                }
+                            );
+                        });
+                    }
+                );
+            });
+    };
+
 
