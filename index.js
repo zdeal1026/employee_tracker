@@ -143,7 +143,7 @@ inquirer
     };
 
     //adding employee
-    const addEmployee = () = > {
+    const addEmployee = () => {
         connection.query(
             `SELECT * FROM employees`,
             
@@ -212,6 +212,57 @@ inquirer
                     }
                 );
             });
+    }
+
+    //adding role
+    const addRole = () => {
+        connection.query(
+            `SELECT * FROM department`,
+
+            (err, results) => {
+                if (err) throw err;
+
+                const departments = results.map((department) => {
+                    return {name: department.department_name, value:deparment.id};
+                });
+
+                inquirer
+                .prompt([
+                    {
+                        name: "title",
+                        type: "input",
+                        message: "Please enter new role",
+                    },
+                    {
+                        name:"salary",
+                        type: "number",
+                        message: "Please enter the salary number",
+                    },
+                    {
+                        name: "department_id",
+                        type: "list",
+                        message: "Please enter employee department",
+                        choices: departments,
+                    },
+                ])
+                .then((answer) => {
+                    connectin.query(
+                        `INSERT INTO role SET ?`,
+                        {
+                            title: answer.title, 
+                            salary: answer.salary,
+                            department_id: answer.department_id,
+                        },
+                        (err,res) => {
+                            if (err) throw err; 
+                            console.log("Role Added");
+                            init();
+                        }
+                    );
+                });
+            }
+        );
     };
 
+    
 
