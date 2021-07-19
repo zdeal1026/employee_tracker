@@ -34,3 +34,19 @@ INSERT INTO role (title, salary, department_id)
 VALUES 
         ('')
 
+INSERT INTO employees (first_name, last_name, role_id, manager_id)
+VALUES
+        ('')
+
+SELECT * FROM department;
+
+SELECT * FROM role;
+
+SELECT * FROM employees;
+
+SELECT title, first_name, last_name, department_name
+FROM department
+INNER JOIN role ON role.department_id = department.id 
+INNER JOIN employees ON employees.role_id = role.id 
+WHERE ?`,
+
