@@ -58,4 +58,47 @@ const showDeparments = ()=> {
     )
 }
 
+//showing employee deparments
+const employeeDep = () => {
+    connection.query(
+        "SELECT * FROM department",
+
+        (err, results) => {
+            if (err) throw err;
+
+        const departments = results.map((department) => {
+            return department.department_name;
+        });
+
+        inquirer
+            .prompt({
+                name: 'department',
+                type: 'list',
+                message: 'Which deparment would you like to show?',
+                choices: departments
+            })
+            .then((answer) => {
+                console.log('Showing Employees by Deparment');
+                connection.query(
+                    `SELECT title, first_name, last_name, department_name 
+                    FROM department 
+                    INNER JOIN role ON role.department_id = deparment.id 
+                    INNER JOIN employees ON employees.role_id = role.id 
+                    WHERE ?`,
+                    {
+                        department_name: answer.department,
+                    },
+
+                    (err, results) => {
+                        if (err) throw err;
+                        console.table(results);
+                        init();
+                    }
+                );
+            });
+        }
+    );
+};
+
+
 
