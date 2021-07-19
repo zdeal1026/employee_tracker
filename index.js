@@ -5,7 +5,7 @@ const console = require("console.table");
 //gets connection to database and portion
 const connection = mysql.createConnection({
     host: 'localhost',
-    port: 3434;
+    port: 3434,
     user: 'root',
     password: '',
     database: 'tracker_DB',
@@ -27,4 +27,20 @@ const employee = () => {
         }
     );
 };
+
+//showing all roles
+const showRoles = () => {
+    console.log('Showing roles');
+    connection.query(
+        `SELECT title, salary, department_name
+        FROM role
+        INNER JOIN deparment ON role.department_id = deparment.id`,
+
+        (err, results) => {
+            if (err) throw err;console.table(results);
+            init();
+        }
+    );
+};
+
 
