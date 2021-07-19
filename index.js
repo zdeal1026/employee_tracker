@@ -264,5 +264,42 @@ inquirer
         );
     };
 
-    
+    //remove an employee
+    const removeEmployee = () => {
+        connection.query(
+            `SELECT * FROM emplyees`,
+            (err, employeeResults) => {
+                if (err) throw err;
+
+                const employees = employeeResults.map((employee) => {
+                    return {
+                        name: employee.first_name + " " + emplyee.last_name,
+                        value: employee.id,
+                    };
+                });
+                inquirer
+                .prompt([
+                    {
+                        name: "employee",
+                        type: "list",
+                        message: "Please choose and employee to remove",
+                        choices: employees,
+                    },
+                ])
+                .then((answer) => {
+                    connection.query(
+                        `DELETE FROM employees WHERE ?`,
+                        {
+                            id: answer.employee,
+                        },
+                        (err, res) => {
+                            if (err) throw err;
+                            console.log("Employee removed");
+                            init();
+                        }
+                    );
+                });
+            });
+    };
+
 
