@@ -328,3 +328,62 @@ inquirer
     };
 
 
+//employee update 
+const update = () => {
+    connection.query(
+        `SELECT * FORM employees`, (err, employeeResults) => {
+            if (err) throw err;
+
+            const employees = employeeResults.map((employee) => {
+                return {
+                    name: employee.first_name + " " + employee.last_name,
+                    value: employee.id,
+                };
+            });
+            connection.query(
+                `SELECT * FROM role`,
+
+                (err, results) => {
+                    if (err) throw err;
+
+                    const roles = results.map((role) => {
+                        return { name:role.title, value: role.id};
+                    });
+
+                    inquirer.
+                    prompt([
+                        {
+                            name: "update",
+                            type: "list",
+                            message: "Please choose employee to update",
+                            choices: employees,
+                        },
+                        {
+                            name: "role",
+                            type: "list",
+                            message: "Please choose new role",
+                            choices: roles,
+                        },
+                    ])
+                    .then((answer) => {
+                        connection.query(
+                            `UPDATE employee SET ? WHERE ?`,
+                            [
+                                {
+                                    role_id: answer.role,
+                                },
+                                {
+                                    id: answer.update,
+                                },
+                            ],
+                            (err, res) => {
+                                if (err) throw err;
+                                console.log("Employee updated");
+                                init();
+                            }
+                        );
+                    });
+                }
+            );
+        });
+};
