@@ -43,4 +43,19 @@ const showRoles = () => {
     );
 };
 
+//showing all deparments
+const showDeparments = ()=> {
+    console.log('Showing deparments');
+    connection.query(
+        `SELECT deparment_name, title, salary
+        FROM department
+        INNER JOIN role ON role.deparment_id = deparment.id`,
+
+        (err, results) => {
+            if (err) throw err;console.table(results);
+            init();
+        }
+    )
+}
+
 
