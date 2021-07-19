@@ -302,4 +302,29 @@ inquirer
             });
     };
 
+    //adding department 
+    const departmentAdd = () => {
+        inquirer
+        .prompt([
+            {
+                name: "department",
+                type: "input",
+                message: "Please enter new department",
+            },
+        ])
+        .then((answer) => {
+            connection.query(
+                `INSERT INTO department SET ?`,
+                {
+                    department_name: answer.department,
+                },
+                (err, res) => {
+                    if (err) throw err;
+                    console.log("Department added");
+                    init();
+                }
+            );
+        });
+    };
+
 
