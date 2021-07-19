@@ -387,3 +387,51 @@ const update = () => {
             );
         });
 };
+
+//startin the app
+const init = () => {
+    inquirer.
+    prompt({
+        name: 'response',
+        type: 'list',
+        message: 'What do you want to do?',
+        choices: [
+            "Show Employees",
+            "Show Roles",
+            "Show Deparments",
+            "Show Employees by Deparments",
+            "Show Employees by Roles",
+            "Add Employee",
+            "Remove Employee",
+            "Update Employee",
+            "Add Department",
+            "Add Role",
+            "Exit",
+        ],
+    })
+    .then((answer) => {
+        switch (answer.response) {
+            case "Show Employees":
+            employees();
+            break;
+
+            case "Show Roles":
+            showRoles();
+            break;
+
+            case "Show Departments":
+            showDeparments();
+            break;
+
+            case "Show Employees by Deparments":
+            employeeDep();
+            break;
+
+            
+            
+            
+            
+            
+        }
+    })
+}
