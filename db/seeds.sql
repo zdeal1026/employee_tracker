@@ -1,0 +1,5 @@
+DROP DATABASE IF EXISTS tracker_DB;
+CREATE DATABASE tracker_DB;
+
+USE tracker_DB;
+
