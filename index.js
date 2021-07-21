@@ -15,10 +15,8 @@ const connection = mysql.createConnection({
 const employees = () => {
     console.log('Showing Employee Data');
     connection.query(
-        `SELECT employees.first_name , employees.last_name, title, salary, managers.first_name AS manager_name
-        FROM employees
-        LEFT JOIN employees managers ON employees.manager_id = managers.id
-        INNER JOIN role ON employees.role_id = role.id`,
+        `SELECT employees.first_name, employees.last_name, role_id, manager_id
+        FROM employees`,
 
         (err, results) => {
             if (err) throw err;
@@ -32,9 +30,8 @@ const employees = () => {
 const showRoles = () => {
     console.log('Showing roles');
     connection.query(
-        `SELECT title, salary, department_name
-        FROM role
-        INNER JOIN deparment ON role.department_id = deparment.id`,
+        `SELECT title, salary, department_id
+        FROM role`,
 
         (err, results) => {
             if (err) throw err; console.table(results);
@@ -43,13 +40,12 @@ const showRoles = () => {
     );
 };
 
-//showing all deparments
-const showDeparments = () => {
-    console.log('Showing deparments');
+//showing all departments
+const showDepartments = () => {
+    console.log('Showing departments');
     connection.query(
-        `SELECT deparment_name, title, salary
-        FROM department
-        INNER JOIN role ON role.deparment_id = deparment.id`,
+        `SELECT department_name
+        FROM department`,
 
         (err, results) => {
             if (err) throw err; console.table(results);
@@ -58,7 +54,7 @@ const showDeparments = () => {
     )
 }
 
-//showing employee deparments
+//showing employee departments
 const employeeDep = () => {
     connection.query(
         "SELECT * FROM department",
@@ -73,15 +69,15 @@ const employeeDep = () => {
             inquirer.prompt({
                     name: 'department',
                     type: 'list',
-                    message: 'Which deparment would you like to show?',
+                    message: 'Which department would you like to show?',
                     choices: departments
                 })
                 .then((answer) => {
-                    console.log('Showing Employees by Deparment');
+                    console.log('Showing Employees by Department');
                     connection.query(
                         `SELECT title, first_name, last_name, department_name 
                     FROM department 
-                    INNER JOIN role ON role.department_id = deparment.id 
+                    INNER JOIN role ON role.department_id = department.id 
                     INNER JOIN employees ON employees.role_id = role.id 
                     WHERE ?`,
                         {
@@ -214,13 +210,13 @@ const addEmployee = () => {
 //remove an employee
 const removeEmployee = () => {
     connection.query(
-        `SELECT * FROM emplyees`,
+        `SELECT * FROM employees`,
         (err, employeeResults) => {
             if (err) throw err;
 
             const employees = employeeResults.map((employee) => {
                 return {
-                    name: employee.first_name + " " + emplyee.last_name,
+                    name: employee.first_name + " " + employee.last_name,
                     value: employee.id,
                 };
             });
@@ -251,7 +247,7 @@ const removeEmployee = () => {
 //employee update 
 const update = () => {
     connection.query(
-        `SELECT * FORM employees`, (err, employeeResults) => {
+        `SELECT * FROM employees`, (err, employeeResults) => {
             if (err) throw err;
 
             const employees = employeeResults.map((employee) => {
@@ -289,7 +285,7 @@ const update = () => {
                                 `UPDATE employee SET ? WHERE ?`,
                                 [
                                     {
-                                        role_id: answer.role,
+                                        role_id: answer.role_id,
                                     },
                                     {
                                         id: answer.update,
@@ -340,7 +336,7 @@ const addRole = () => {
             if (err) throw err;
 
             const departments = results.map((department) => {
-                return { name: department.department_name, value: deparment.id };
+                return { name: department.department_name, value: department.id };
             });
 
             inquirer.prompt([
@@ -389,8 +385,8 @@ const init = () => {
             choices: [
                 "Show Employees",
                 "Show Roles",
-                "Show Deparments",
-                "Show Employees by Deparments",
+                "Show Departments",
+                "Show Employees by Departments",
                 "Show Employees by Roles",
                 "Add Employee",
                 "Remove Employee",
@@ -411,10 +407,10 @@ const init = () => {
                     break;
 
                 case "Show Departments":
-                    showDeparments();
+                    showDepartments();
                     break;
 
-                case "Show Employees by Deparments":
+                case "Show Employees by Departments":
                     employeeDep();
                     break;
 
@@ -434,7 +430,7 @@ const init = () => {
                     update();
                     break;
 
-                case "Add Deparment":
+                case "Add Department":
                     departmentAdd();
                     break;
 
@@ -448,7 +444,6 @@ const init = () => {
             }
         });
 };
-
 
 //ends app
 connection.connect((err) => {
