@@ -282,7 +282,7 @@ const update = () => {
                         ])
                         .then((answer) => {
                             connection.query(
-                                `UPDATE employee SET ? WHERE ?`,
+                                `UPDATE employees SET ? WHERE ?`,
                                 [
                                     {
                                         role_id: answer.role_id,
@@ -358,7 +358,7 @@ const addRole = () => {
                     },
                 ])
                 .then((answer) => {
-                    connectin.query(
+                    connection.query(
                         `INSERT INTO role SET ?`,
                         {
                             title: answer.title,
