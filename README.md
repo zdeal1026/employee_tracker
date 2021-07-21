@@ -19,14 +19,15 @@
 
 * [Contact](#contact)
 
-* [Links](#links)
+* [ScreenShots](#ScreenShots)
 
 ## Description
 
-
+This assignment tested our knowledge of mysql, inquirer, and node.js. I was tasked with building a command line application that could allow users to Add departments, roles, employees; view departments, roles, employees; and finally update employee information. 
 
 ## Installation
-
+ 
+ To run this application install "npm install" in the terminal, be sure to include mysql, inquirer, and console.table.
 
 
 ## Usage
@@ -43,11 +44,7 @@ Allow users to contribute to the application using Contributor Covenant (https:/
 
 ## Tests
 
-To run tests, run the following command:
-
-```
-npm run test
-```
+To test the index.js file, open the integrated terminal and run "npm start", then you will be presented with the application.
 
 ## Questions
 
@@ -56,6 +53,6 @@ For any questions please use the contact information below
 ## Contact
 
  email jedimastershake@gmail.com, 
- github repo https://github.com/zdeal1026/READMEgenerator
+ github repo https://github.com/zdeal1026/employee_tracker 
 
-## Links
+## ScreenShots
