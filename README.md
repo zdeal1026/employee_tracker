@@ -19,7 +19,7 @@
 
 * [Contact](#contact)
 
-* [ScreenShots](#ScreenShots)
+* [Links](#links)
 
 ## Description
 
@@ -32,7 +32,7 @@ This assignment tested our knowledge of mysql, inquirer, and node.js. I was task
 
 ## Usage
 
-
+This application can be used as an employee tracker for a company.
 
 ## License
 
@@ -55,4 +55,6 @@ For any questions please use the contact information below
  email jedimastershake@gmail.com, 
  github repo https://github.com/zdeal1026/employee_tracker 
 
-## ScreenShots
+## Links
+
+https://drive.google.com/file/d/17Ve2_d-CH6sbvpob367fvczqRKeUJqJw/view
